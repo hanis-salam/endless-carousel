@@ -1,26 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import Carousel from "./Carousel";
 
-function App() {
+const App: React.FC = () => {
+  const [images, setImages] = useState<string[]>([]);
+
+  useEffect(() => {
+    // Fetch images from an API, or set up static images initially
+    const loadImages = async () => {
+      const fetchedImages = Array.from(
+        { length: 5 },
+        (_, i) => `https://picsum.photos/800/400?random=${i}`
+      );
+      setImages(fetchedImages);
+    };
+
+    loadImages();
+  }, []); // Empty dependency array ensures it only runs once on mount
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Image Carousel</h1>
+      {images.length > 0 ? (
+        <Carousel images={images} />
+      ) : (
+        <p>Loading images...</p>
+      )}
     </div>
   );
-}
+};
 
 export default App;
